@@ -1,28 +1,20 @@
-from flask import Flask
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-def front_end():
-    print(f"Choose the Type of Fruit:"
-          f"1. Apple - 1"
-          f"2. Bellpepper - 2"
-          f"3. Cherry - 3"
-          f"4. Corn - 4"
-          f"5. Grape - 5"
-          f"6. Potato - 6"
-          f"7. Tomato - 7"
-          f"8. Peach - 8"
-          f"9. Strawberry - 9")
-
-#Takes Input based on the options and returns the appropriate Fruit Type
-def returnOptionSelected():
-
-
-
-
 @app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+def index():
+    return render_template('index.html')
+
+
+@app.route('/process', methods=['POST'])
+def process():
+    user_input = request.form['fruit_choice']
+
+    if user_input.isdigit() and 1 <= int(user_input) <= 9:
+        return f"You chose fruit number {user_input}"
+    else:
+        return "Invalid input. Please enter a number between 1 and 9."
 
 
 if __name__ == '__main__':
