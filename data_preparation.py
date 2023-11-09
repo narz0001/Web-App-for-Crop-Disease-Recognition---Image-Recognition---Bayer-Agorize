@@ -18,8 +18,9 @@ def prepare_data(home, fruit, categories):
                 image = io.imread(each)
                 resize_img = resize(image, (200, 200))
                 rgb_image = rgb2gray(resize_img)
-                data_input.append(rgb_image.flatten())
+                data_input.append(rgb_image.flatten().tolist())
                 data_target.append(key)
         os.chdir(home)
 
     return np.array(data_input), np.array(data_target)
+

@@ -49,7 +49,6 @@ def process():
 
         # Predict using the KNN model
         prediction = knn_model.predict(reshaped_image)
-        flash(prediction)
         return render_template('result.html', prediction=prediction[0])
 
 if __name__ == '__main__':
