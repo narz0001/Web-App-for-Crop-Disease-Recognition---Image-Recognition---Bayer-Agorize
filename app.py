@@ -15,15 +15,15 @@ home = app.root_path
 
 # Mapping of fruits to machine learning models
 model_mapping = {
-    'Apple': 'svc',
-    'Cherry': 'svc',
-    'Grape': 'svc',
-    'Tomato': 'svc',
-    'Peach': 'svc',
-    'Strawberry': 'svc',
-    'Bellpepper': 'knn',
-    'Potato': 'rf',
-    'Corn': 'rf'
+    'Apple': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.1}},
+    'Cherry': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.1}},
+    'Grape': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.1}},
+    'Tomato': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.5}},
+    'Peach': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.1}},
+    'Strawberry': {'model': 'svc', 'params': {'kernel': 'rbf', 'nu': 0.4}},
+    'Bellpepper': {'model': 'knn', 'params': {'n_neighbors': 7, 'p': 1, 'weights': 'uniform'}},
+    'Potato': {'model': 'rf', 'params': {'criterion': 'entropy', 'max_depth': 20, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}},
+    'Corn': {'model': 'rf', 'params': {'criterion': 'entropy', 'max_depth': 10, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 100}}
 }
 
 @app.route('/')
@@ -43,8 +43,10 @@ def process():
         # Choose the appropriate fruit based on the selected option
         fruit = fruit_type
 
-        # Get the selected model name
-        model_name = model_mapping[fruit_type]
+        # Get the selected model and parameters
+        model_info = model_mapping[fruit_type]
+        model_name = model_info['model']
+        model_params = model_info['params']
 
         if model_name:
             # Prepare data based on the selected fruit
@@ -52,11 +54,11 @@ def process():
             X_train, X_test, y_train, y_test = train_test_split(data_input, data_target, test_size=0.3, random_state=0)
 
             if model_name == 'svc':
-                model = train_svc_model(X_train, y_train)
+                model = train_svc_model(X_train, y_train, **model_params)
             elif model_name == 'knn':
-                model = train_knn_model(X_train, y_train)
+                model = train_knn_model(X_train, y_train, **model_params)
             elif model_name == 'rf':
-                model = train_rf_model(X_train, y_train)
+                model = train_rf_model(X_train, y_train, **model_params)
             else:
                 flash('Invalid model selection')
                 return redirect(request.url)
@@ -85,7 +87,7 @@ def process():
             y_pred = model.predict(X_test)
             accuracy = f"{accuracy_score(y_test, y_pred) * 100:.2f}%"
 
-            return render_template('result.html', prediction=prediction[0], accuracy_score=accuracy, model_name=model_name)
+            return render_template('result.html', prediction=prediction[0], accuracy_score=accuracy)
 
 if __name__ == '__main__':
     app.run(debug=True)
