@@ -23,4 +23,3 @@ def prepare_data(home, fruit, categories):
         os.chdir(home)
 
     return np.array(data_input), np.array(data_target)
-
