@@ -87,7 +87,7 @@ def process():
             y_pred = model.predict(X_test)
             accuracy = f"{accuracy_score(y_test, y_pred) * 100:.2f}%"
 
-            return render_template('result.html', prediction=prediction[0], accuracy_score=accuracy)
+            return render_template('result.html', prediction=prediction[0], accuracy_score=accuracy, model_name = model_name)
 
 if __name__ == '__main__':
     app.run(debug=True)
