@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css"> <!-- Add this line -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <title>Result</title>
 </head>
 <body>
@@ -12,6 +12,8 @@
         <h1>Result</h1>
         <p class="prediction-text">The predicted class is: <span class="predicted-class">{{ prediction }}</span></p>
         <p class="model-text">Model used: <span class="model-name">{{ model_name }}</span> with Accuracy = <span class="accuracy">{{ accuracy_score }}</span></p>
+
+        <a href="/">Go back to homepage</a>
     </div>
 </body>
 </html>
